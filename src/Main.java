@@ -1,7 +1,12 @@
+import javax.sound.midi.Soundbank;
+import java.sql.SQLOutput;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     private static final int AMOUNT_EMPLOYEE = 10;
+    private static final  int percentIndexation = 10;
+    private static final int department = 5;
 
     public static void main(String[] args) {
         final Employee[] employees = new Employee[AMOUNT_EMPLOYEE];
@@ -24,6 +29,13 @@ public class Main {
         System.out.println("Минимальная зарплата = "+ getMinSalary(employees));
         System.out.println("Максимальная зарплата = "+ getMaxSalary(employees));
         System.out.println("Средняя зарплата = "+ getAverageSalary(employees));
+
+        indexSalary(employees,percentIndexation);
+        printEmployees(employees);
+
+        System.out.println("Минимальная зарплата отдела "+ department +" " + getMinSalaryEmployeeDepart(employees,department));
+        System.out.println("Максимальная зарплата отдела "+ department +" " + getMaxSalaryEmployeeDepart(employees,department));
+
 
     }
 
@@ -66,6 +78,31 @@ public class Main {
             System.out.println(employee.getFullName());
 
         }
+    }
+
+    private static void indexSalary(Employee[] employees, double percentIndexation){
+        for (Employee employee : employees) {
+            int newSalary = (int) (employee.getSalary() * (1 + percentIndexation / 100));
+            employee.setSalary(newSalary);
+        }
+    }
+    private static Employee getMinSalaryEmployeeDepart(Employee[] employees, int department){
+        Employee minSalaryEmployee = null;
+        for (Employee employee : employees) {
+            if (employee.getDepartment() == department && (minSalaryEmployee == null || employee.getSalary() < minSalaryEmployee.getSalary())) {
+                minSalaryEmployee = employee;
+            }
+        }
+        return minSalaryEmployee;
+    }
+    private static Employee getMaxSalaryEmployeeDepart(Employee[] employees, int department){
+        Employee maxSalaryEmployee = null;
+        for (Employee employee : employees) {
+            if (employee.getDepartment() == department && (maxSalaryEmployee == null || employee.getSalary() > maxSalaryEmployee.getSalary())) {
+                maxSalaryEmployee = employee;
+            }
+        }
+        return maxSalaryEmployee;
     }
 
 }
